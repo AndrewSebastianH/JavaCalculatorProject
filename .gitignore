@@ -1,0 +1,15 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ
+.idea/
+*.iml
+
+# NetBeans
+nbproject/
+
+# Maven
+target/
+maven-status/
