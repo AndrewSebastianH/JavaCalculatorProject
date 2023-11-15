@@ -38,6 +38,10 @@ public class MainApp extends Application {
 //		Calculator logic call
 		calculator = new calculator.CalculatorImpl();
 
+//		Calculator icon
+		Image gigachad = new Image("/images/gigachad.png");
+		primaryStage.getIcons().add(gigachad);
+
 //		Root element
 		VBox root = new VBox(15);
 		root.setAlignment(Pos.CENTER);
@@ -127,7 +131,7 @@ public class MainApp extends Application {
 //		Calculate Button
 		Button calculateButton = new Button("Calculate");
 		calculateButton.setMinSize(100, 50);
-		calculateButton.setStyle("-fx-background-color: #FFA406");
+//		calculateButton.setStyle("-fx-background-color: #FFA406");
 		Label resultLabel = new Label();
 
 		calculateButton.setOnAction(e -> {
