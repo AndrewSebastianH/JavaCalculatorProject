@@ -18,9 +18,11 @@ public class CalculatorImpl implements Calculator {
 			char currentChar = formula.charAt(i);
 
 			if (Character.isDigit(currentChar) || (currentChar == '-'
-					&& (i == 0 || (!Character.isDigit(formula.charAt(i - 1)) && formula.charAt(i - 1) != '.')))) {
+					&& (i == 0 || (!Character.isDigit(formula.charAt(i - 1)) && formula.charAt(i - 1) != '.'))
+					&& formula.charAt(i - 1) != ')')) {
 				// If the current character is a digit or a negative sign not in the middle of a
 				// number
+//				System.out.println("CharAt i-1 : " + formula.charAt(i - 1));
 				StringBuilder numBuilder = new StringBuilder();
 				numBuilder.append(currentChar);
 
@@ -28,8 +30,9 @@ public class CalculatorImpl implements Calculator {
 				while (i + 1 < formula.length()
 						&& (Character.isDigit(formula.charAt(i + 1)) || formula.charAt(i + 1) == '.')) {
 					numBuilder.append(formula.charAt(++i));
-				}
 
+				}
+				System.out.println("masuk stack stelah numbuilder:" + Double.parseDouble(numBuilder.toString()));
 				operands.push(Double.parseDouble(numBuilder.toString()));
 			} else if (currentChar == '(') {
 				operators.push(currentChar);
