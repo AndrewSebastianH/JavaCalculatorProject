@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -75,13 +77,20 @@ public class MainApp extends Application {
 				buttonIndex++;
 			}
 		}
+
 		Button zeroButton = new Button("0");
 		zeroButton.setMinSize(50, 50);
 		addButtonTextToInputField(zeroButton, inputField);
 		numbersGrid.add(zeroButton, 1, 3);
 
-		Button removeButton = new Button("< -- ");
+		Button removeButton = new Button();
 		removeButton.setMinSize(50, 50);
+		Image removeImage = new Image("/images/backspace.png");
+		ImageView imageView = new ImageView(removeImage);
+		imageView.setFitWidth(25);
+		imageView.setFitHeight(25);
+		removeButton.setGraphic(imageView);
+
 		removeButtonClick(removeButton, inputField);
 		numbersGrid.add(removeButton, 2, 3);
 
