@@ -6,13 +6,13 @@
   font-weight: 600;
 } */
 
-* {
+ * {
     -fx-font-family: "Poppins SemiBold";
-}
+ }
 
-label {
+ label {
 	-fx-font-family: 'Metropolis Semibold';
-}
+ } 
  
  Button {
     -fx-background-color: #7d7d7d;
@@ -23,7 +23,11 @@ label {
  
  Button:hover {
     -fx-background-color: #B5B5B5; /* Lightened color for hover effect */
-}
+ }
+
+ Button:pressed {
+    -fx-background-color: #555555; /* Darkened color for pressed effect */
+ }
 
  .operator-button {
  	-fx-background-color: #ff8c00;
@@ -31,11 +35,15 @@ label {
  }
  
  .operator-button:hover {
-    -fx-background-color: #FFA500; /* Lightened color for hover effect */
-}
+    -fx-background-color: #FFA500;
+ }
+
+ .operator-button:pressed {
+    -fx-background-color: #FF8C00; 
+ }
  
  .result-title {
- 	-fx-text-fill: white;
+ 	-fx-text-fill: #ff8c00;
  	-fx-font-size: 20pt;
  	-fx-font-weight: bold;
  }
@@ -46,15 +54,18 @@ label {
  
  .calculate-button {
  	-fx-background-color: #4CAF50;
+ 	-fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-font-size: 10pt;
     -fx-padding: 10 20;	
  }
  .calculate-button:hover {
-    -fx-background-color: #45A049; /* Lightened color for hover effect */
-}
+    -fx-background-color: #45A049;
+ }
 
-
+ .calculate-button:pressed {
+    -fx-background-color: #388E3C;
+ }
  
  .ac-button {
  	-fx-background-color: #ff8c00;
@@ -70,6 +81,11 @@ label {
  
  .ac-button:hover,
  .backspace-button:hover {
-    -fx-background-color: #FFA500; /* Lightened color for hover effect */
+    -fx-background-color: #FFA500; 
+}
+
+ .ac-button:pressed,
+ .backspace-button:pressed {
+    -fx-background-color: #FF8C00;
 }
  

@@ -30,10 +30,10 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) {
 //		Window size
 		window = primaryStage;
-		window.setMaxHeight(600);
-		window.setMaxWidth(500);
-		window.setMinHeight(515);
-		window.setMinWidth(420);
+		window.setMaxHeight(580);
+		window.setMaxWidth(440);
+		window.setMinHeight(580);
+		window.setMinWidth(440);
 
 //		Calculator logic call
 		calculator = new calculator.CalculatorImpl();
@@ -74,7 +74,7 @@ public class MainApp extends Application {
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				Button button = new Button(Integer.toString(buttonIndex));
-				button.setMinSize(50, 50);
+				button.setMinSize(60, 50);
 				numbersGrid.add(button, col, row);
 				addButtonTextToInputField(button, inputField);
 				buttonIndex++;
@@ -82,13 +82,13 @@ public class MainApp extends Application {
 		}
 
 		Button zeroButton = new Button("0");
-		zeroButton.setMinSize(50, 50);
+		zeroButton.setMinSize(60, 50);
 		addButtonTextToInputField(zeroButton, inputField);
 		numbersGrid.add(zeroButton, 1, 3);
 
 //		Remove button
 		Button removeButton = new Button();
-		removeButton.setMinSize(50, 50);
+		removeButton.setMinSize(60, 50);
 		removeButton.getStyleClass().add("backspace-button");
 		Image removeImage = new Image("/images/backspace.png");
 		ImageView imageView = new ImageView(removeImage);
@@ -100,7 +100,7 @@ public class MainApp extends Application {
 
 //		All clear Button
 		Button ACButton = new Button("AC");
-		ACButton.setMinSize(50, 50);
+		ACButton.setMinSize(60, 50);
 		ACButton.getStyleClass().add("ac-button");
 		ACButtonClick(ACButton, inputField);
 		numbersGrid.add(ACButton, 0, 3);
@@ -118,7 +118,7 @@ public class MainApp extends Application {
 			for (int col = 0; col < 2; col++) {
 				if (operatorButtonIndex < operators.length) {
 					Button operatorButton = new Button(operators[operatorButtonIndex]);
-					operatorButton.setMinSize(50, 50);
+					operatorButton.setMinSize(60, 50);
 					operatorButton.getStyleClass().add("operator-button");
 					operatorsGrid.add(operatorButton, col, row);
 					addButtonTextToInputField(operatorButton, inputField);
@@ -133,10 +133,10 @@ public class MainApp extends Application {
 		numbersAndOperatorsGrid.getChildren().addAll(numbersGrid, operatorsGrid);
 
 //		Calculate Button
-		Button calculateButton = new Button("Calculate");
+		Button calculateButton = new Button("CALCULATE");
 		calculateButton.getStyleClass().add("calculate-button");
 
-		calculateButton.setMinSize(150, 40);
+		calculateButton.setMinSize(380, 50);
 
 		VBox resultVbox = new VBox();
 		resultVbox.setPadding(new Insets(15, 0, 20, 0));
