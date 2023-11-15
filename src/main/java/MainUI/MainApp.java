@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -29,9 +28,6 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
-		Font.loadFont(getClass().getResourceAsStream("/font/SpeedyRegular.ttf"), 16);
-
 //		Window size
 		window = primaryStage;
 		window.setMaxHeight(600);
