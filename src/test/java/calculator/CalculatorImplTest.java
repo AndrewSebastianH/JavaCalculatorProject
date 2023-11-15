@@ -194,4 +194,22 @@ class CalculatorImplTest {
 		double result = formula.calculate("1.+1");
 		Assertions.assertEquals(2, result, 0);
 	}
+
+	@Test
+	void testExponentiation() {
+		double result = formula.calculate("2^3");
+		Assertions.assertEquals(8, result, 0);
+	}
+
+	@Test
+	void testSquareRoot() {
+		double result = formula.calculate("sqrt(16)");
+		Assertions.assertEquals(4, result, 0);
+	}
+
+	@Test
+	void testMixedExponentiationAndSquareRoot() {
+		double result = formula.calculate("2^3 + sqrt(25)");
+		Assertions.assertEquals(13, result, 0);
+	}
 }
