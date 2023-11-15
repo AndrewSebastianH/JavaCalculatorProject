@@ -38,6 +38,10 @@ public class MainApp extends Application {
 //		Calculator logic call
 		calculator = new calculator.CalculatorImpl();
 
+//		Calculator icon
+		Image gigachad = new Image("/images/gigachad.png");
+		primaryStage.getIcons().add(gigachad);
+
 //		Root element
 		VBox root = new VBox(15);
 		root.setAlignment(Pos.CENTER);
@@ -61,7 +65,6 @@ public class MainApp extends Application {
 
 //		Grid - Number Buttons  
 		GridPane numbersGrid = new GridPane();
-		numbersGrid.setMinSize(400, 200);
 		numbersGrid.setPadding(new Insets(10, 10, 10, 10));
 		numbersGrid.setVgap(10);
 		numbersGrid.setHgap(10);
@@ -83,6 +86,7 @@ public class MainApp extends Application {
 		addButtonTextToInputField(zeroButton, inputField);
 		numbersGrid.add(zeroButton, 1, 3);
 
+//		Remove button
 		Button removeButton = new Button();
 		removeButton.setMinSize(50, 50);
 		Image removeImage = new Image("/images/backspace.png");
@@ -90,26 +94,44 @@ public class MainApp extends Application {
 		imageView.setFitWidth(25);
 		imageView.setFitHeight(25);
 		removeButton.setGraphic(imageView);
-
 		removeButtonClick(removeButton, inputField);
 		numbersGrid.add(removeButton, 2, 3);
 
+//		All clear Button
+		Button ACButton = new Button("AC");
+		ACButton.setMinSize(50, 50);
+		ACButtonClick(ACButton, inputField);
+		numbersGrid.add(ACButton, 0, 3);
+
 //		Grid - Operators Button
 		GridPane operatorsGrid = new GridPane();
-		operatorsGrid.setMinSize(400, 200);
 		operatorsGrid.setPadding(new Insets(10, 10, 10, 10));
 		operatorsGrid.setVgap(10);
 		operatorsGrid.setHgap(10);
 
 //		Operator Buttons
+		String[] operators = { "+", "-", "/", "*", "(", ")" };
+		int operatorButtonIndex = 0;
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				if (operatorButtonIndex < operators.length) {
+					Button operatorButton = new Button(operators[operatorButtonIndex]);
+					operatorButton.setMinSize(50, 50);
+					operatorsGrid.add(operatorButton, col, row);
+					addButtonTextToInputField(operatorButton, inputField);
+					operatorButtonIndex++;
+				}
+			}
+		}
 
 //		Operators and Numbers HBox
-		HBox numbersAndOperatorsGrid = new HBox(15);
+		HBox numbersAndOperatorsGrid = new HBox(25);
 		numbersAndOperatorsGrid.getChildren().addAll(numbersGrid, operatorsGrid);
 
 //		Calculate Button
 		Button calculateButton = new Button("Calculate");
 		calculateButton.setMinSize(100, 50);
+//		calculateButton.setStyle("-fx-background-color: #FFA406");
 		Label resultLabel = new Label();
 
 		calculateButton.setOnAction(e -> {
@@ -122,7 +144,7 @@ public class MainApp extends Application {
 			}
 		});
 
-		root.getChildren().addAll(inputFieldHbox, numbersGrid, calculateButton, resultLabel);
+		root.getChildren().addAll(inputFieldHbox, numbersAndOperatorsGrid, calculateButton, resultLabel);
 
 		scene1 = new Scene(root);
 		window.setTitle("Gigachad Calculator App - Andrew & Owen");
@@ -141,6 +163,13 @@ public class MainApp extends Application {
 		button.setOnAction(e -> {
 			String currentText = inputField.getText();
 			inputField.setText(currentText.length() >= 2 ? currentText.substring(0, currentText.length() - 2) : "");
+		});
+	}
+
+//	All Clear button handler
+	private void ACButtonClick(Button button, TextField inputField) {
+		button.setOnAction(e -> {
+			inputField.setText("");
 		});
 	}
 
