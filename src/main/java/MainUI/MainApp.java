@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -28,6 +29,9 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+
+		Font.loadFont(getClass().getResourceAsStream("/font/SpeedyRegular.ttf"), 16);
+
 //		Window size
 		window = primaryStage;
 		window.setMaxHeight(600);
@@ -45,14 +49,14 @@ public class MainApp extends Application {
 //		Root element
 		VBox root = new VBox(15);
 		root.setAlignment(Pos.CENTER);
-		root.setStyle("-fx-background-color: #F2F2F2;");
+		root.setStyle("-fx-background-color: #f2f2f2;");
 
 //		Input Field HBox
 		HBox inputFieldHbox = new HBox();
 		inputFieldHbox.setPadding(new Insets(15, 12, 15, 12));
 		inputFieldHbox.setAlignment(Pos.CENTER);
 		inputFieldHbox.setMaxWidth(Double.MAX_VALUE);
-		inputFieldHbox.setStyle("-fx-background-color: #1C2541;");
+		inputFieldHbox.setStyle("-fx-background-color: #1C2541; -fx-font-size: 16pt;");
 
 //		Main Formula Input Field
 		TextField inputField = new TextField();
@@ -89,6 +93,7 @@ public class MainApp extends Application {
 //		Remove button
 		Button removeButton = new Button();
 		removeButton.setMinSize(50, 50);
+		removeButton.getStyleClass().add("backspace-button");
 		Image removeImage = new Image("/images/backspace.png");
 		ImageView imageView = new ImageView(removeImage);
 		imageView.setFitWidth(25);
@@ -100,6 +105,7 @@ public class MainApp extends Application {
 //		All clear Button
 		Button ACButton = new Button("AC");
 		ACButton.setMinSize(50, 50);
+		ACButton.getStyleClass().add("ac-button");
 		ACButtonClick(ACButton, inputField);
 		numbersGrid.add(ACButton, 0, 3);
 
@@ -113,10 +119,11 @@ public class MainApp extends Application {
 		String[] operators = { "+", "-", "/", "*", "(", ")" };
 		int operatorButtonIndex = 0;
 		for (int row = 0; row < 3; row++) {
-			for (int col = 0; col < 3; col++) {
+			for (int col = 0; col < 2; col++) {
 				if (operatorButtonIndex < operators.length) {
 					Button operatorButton = new Button(operators[operatorButtonIndex]);
 					operatorButton.setMinSize(50, 50);
+					operatorButton.getStyleClass().add("operator-button");
 					operatorsGrid.add(operatorButton, col, row);
 					addButtonTextToInputField(operatorButton, inputField);
 					operatorButtonIndex++;
@@ -126,27 +133,50 @@ public class MainApp extends Application {
 
 //		Operators and Numbers HBox
 		HBox numbersAndOperatorsGrid = new HBox(25);
+		numbersAndOperatorsGrid.setAlignment(Pos.CENTER);
 		numbersAndOperatorsGrid.getChildren().addAll(numbersGrid, operatorsGrid);
 
 //		Calculate Button
 		Button calculateButton = new Button("Calculate");
-		calculateButton.setMinSize(100, 50);
-//		calculateButton.setStyle("-fx-background-color: #FFA406");
+		calculateButton.getStyleClass().add("calculate-button");
+
+		calculateButton.setMinSize(150, 40);
+
+		VBox resultVbox = new VBox();
+		resultVbox.setPadding(new Insets(15, 0, 20, 0));
+		resultVbox.setAlignment(Pos.CENTER);
+
+		Label resultTitle = new Label("RESULT");
+		resultTitle.getStyleClass().add("result-title");
+
 		Label resultLabel = new Label();
+		resultLabel.getStyleClass().add("result");
 
 		calculateButton.setOnAction(e -> {
 			String formula = inputField.getText();
 			try {
 				double result = calculator.calculate(formula);
-				resultLabel.setText("Result: " + result);
+				resultLabel.setStyle("-fx-text-fill: white;");
+				if (result % 1 == 0) {
+					resultLabel.setText(String.format("%.0f", result));
+				} else {
+					resultLabel.setText(String.valueOf(result));
+				}
 			} catch (Exception ex) {
+				resultLabel.setStyle("-fx-text-fill: red;");
 				resultLabel.setText("Error: " + ex.getMessage());
 			}
 		});
 
-		root.getChildren().addAll(inputFieldHbox, numbersAndOperatorsGrid, calculateButton, resultLabel);
+//		Result VBox
+		resultVbox.getChildren().addAll(resultTitle, resultLabel);
+		resultVbox.setStyle("-fx-background-color: #1C2541;");
 
+		root.getChildren().addAll(inputFieldHbox, numbersAndOperatorsGrid, calculateButton, resultVbox);
+
+//		Main Window and Scene Title call
 		scene1 = new Scene(root);
+		scene1.getStylesheets().add("./styles.css");
 		window.setTitle("Gigachad Calculator App - Andrew & Owen");
 		window.setScene(scene1);
 		window.show();
