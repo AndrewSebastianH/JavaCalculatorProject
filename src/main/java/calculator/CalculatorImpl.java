@@ -70,15 +70,11 @@ public class CalculatorImpl implements Calculator {
 
 	private void evaluate(Stack<Double> operands, Stack<Character> operators) {
 		char operator = operators.pop();
-		double result;
-		if (operator == '√') {
-			double operand2 = operands.pop();
-			result = applyOperator(0, operand2, operator);
-		} else {
-			double operand2 = operands.pop();
-			double operand1 = operands.pop();
-			result = applyOperator(operand1, operand2, operator);
-		}
+
+		double operand2 = operands.pop();
+		double operand1 = (operator != '√') ? operands.pop() : 0;
+
+		double result = applyOperator(operand1, operand2, operator);
 		operands.push(result);
 	}
 
