@@ -36,9 +36,9 @@ public class MainApp extends Application {
 //		Window size
 		window = primaryStage;
 		window.setMaxHeight(580);
-		window.setMaxWidth(440);
+		window.setMaxWidth(480);
 		window.setMinHeight(580);
-		window.setMinWidth(440);
+		window.setMinWidth(480);
 
 //		Calculator logic call
 		calculator = new calculator.CalculatorImpl();
@@ -117,10 +117,10 @@ public class MainApp extends Application {
 		operatorsGrid.setHgap(10);
 
 //		Operator Buttons
-		String[] operators = { "+", "-", "/", "*", "(", ")", ".", "√" };
+		String[] operators = { "+", "-", "/", "*", "(", ")", ".", "√", "^" };
 		int operatorButtonIndex = 0;
-		for (int row = 0; row < 5; row++) {
-			for (int col = 0; col < 2; col++) {
+		for (int row = 0; row < 4; row++) {
+			for (int col = 0; col < 3; col++) {
 				if (operatorButtonIndex < operators.length) {
 					Button operatorButton = new Button(operators[operatorButtonIndex]);
 					operatorButton.setMinSize(60, 50);
@@ -141,11 +141,12 @@ public class MainApp extends Application {
 		Button calculateButton = new Button("CALCULATE");
 		calculateButton.getStyleClass().add("calculate-button");
 
-		calculateButton.setMinSize(380, 50);
+		calculateButton.setMinSize(445, 50);
 
 		VBox resultVbox = new VBox();
 		resultVbox.setPadding(new Insets(15, 0, 20, 0));
 		resultVbox.setAlignment(Pos.CENTER);
+		resultVbox.setMinHeight(120);
 
 		Label resultTitle = new Label("RESULT");
 		resultTitle.getStyleClass().add("result-title");
@@ -163,6 +164,7 @@ public class MainApp extends Application {
 				} else {
 					resultLabel.setText(String.valueOf(result));
 				}
+				playSuccessSfx();
 			} catch (Exception ex) {
 				playErrorSfx();
 				resultLabel.setStyle("-fx-text-fill: red;");
@@ -222,28 +224,36 @@ public class MainApp extends Application {
 
 	}
 
-	MediaPlayer buttonSfxPlayer;
+	MediaPlayer sfxPlayer;
 
 //	Play button SFX
 	public void playButtonSfx() {
 		String source = "/sounds/button-click.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
 	}
 
 	public void playButtonSfx2() {
 		String source = "/sounds/button-click2.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
 	}
 
 	public void playErrorSfx() {
 		String source = "/sounds/errorfart.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
+	}
+
+	public void playSuccessSfx() {
+		String source = "/sounds/success.mp3";
+		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.setVolume(0.5);
+		sfxPlayer.play();
 	}
 
 }
