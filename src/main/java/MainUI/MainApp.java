@@ -1,6 +1,8 @@
 package MainUI;
 
 import calculator.Calculator;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,10 +14,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainApp extends Application {
 
@@ -35,9 +40,9 @@ public class MainApp extends Application {
 
 //		Window size
 		window = primaryStage;
-		window.setMaxHeight(580);
+		window.setMaxHeight(700);
 		window.setMaxWidth(480);
-		window.setMinHeight(580);
+		window.setMinHeight(600);
 		window.setMinWidth(480);
 
 //		Calculator logic call
@@ -48,7 +53,7 @@ public class MainApp extends Application {
 		primaryStage.getIcons().add(gigachad);
 
 //		Root element
-		VBox root = new VBox(15);
+		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setStyle("-fx-background-color: #f2f2f2;");
 
@@ -57,12 +62,13 @@ public class MainApp extends Application {
 		inputFieldHbox.setPadding(new Insets(15, 12, 15, 12));
 		inputFieldHbox.setAlignment(Pos.CENTER);
 		inputFieldHbox.setMaxWidth(Double.MAX_VALUE);
-		inputFieldHbox.setStyle("-fx-background-color: #1C2541; -fx-font-size: 16pt;");
+		inputFieldHbox.setStyle(
+				"-fx-background-color: radial-gradient(center 80% 20%, radius 75%, #FFD60A, #FF9F1C); -fx-font-size: 16pt;");
 
 //		Main Formula Input Field
 		TextField inputField = new TextField();
 		inputField.setPromptText("Type a formula");
-		inputField.setMinSize(375, 50);
+		inputField.setMinSize(440, 50);
 		inputField.setMaxSize(Double.MAX_VALUE, 50);
 		inputField.setFocusTraversable(false);
 
@@ -70,7 +76,7 @@ public class MainApp extends Application {
 
 //		Grid - Number Buttons  
 		GridPane numbersGrid = new GridPane();
-		numbersGrid.setPadding(new Insets(10, 10, 10, 10));
+		numbersGrid.setPadding(new Insets(25, 10, 25, 10));
 		numbersGrid.setVgap(10);
 		numbersGrid.setHgap(10);
 
@@ -112,7 +118,7 @@ public class MainApp extends Application {
 
 //		Grid - Operators Button
 		GridPane operatorsGrid = new GridPane();
-		operatorsGrid.setPadding(new Insets(10, 10, 10, 10));
+		operatorsGrid.setPadding(new Insets(25, 10, 25, 10));
 		operatorsGrid.setVgap(10);
 		operatorsGrid.setHgap(10);
 
@@ -140,43 +146,60 @@ public class MainApp extends Application {
 //		Calculate Button
 		Button calculateButton = new Button("CALCULATE");
 		calculateButton.getStyleClass().add("calculate-button");
-
+		calculateButton.setPadding(new Insets(15, 0, 20, 0));
 		calculateButton.setMinSize(445, 50);
 
 		VBox resultVbox = new VBox();
-		resultVbox.setPadding(new Insets(15, 0, 20, 0));
+		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
 		resultVbox.setAlignment(Pos.CENTER);
 		resultVbox.setMinHeight(120);
 
-		Label resultTitle = new Label("RESULT");
-		resultTitle.getStyleClass().add("result-title");
+		Label resultLabel = new Label("0");
+		resultLabel.getStyleClass().add("result-label");
+		resultLabel.setStyle("-fx-text-fill: #ff8c00");
 
-		Label resultLabel = new Label();
-		resultLabel.getStyleClass().add("result");
+// 		Error Label
+		Label errorLabel = new Label("");
+		errorLabel.getStyleClass().add("result-label");
+		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
+
+//		StackPane to stack the labels
+		StackPane labelsStackPane = new StackPane();
+		labelsStackPane.setAlignment(Pos.CENTER);
+		labelsStackPane.getChildren().addAll(resultLabel, errorLabel);
 
 		calculateButton.setOnAction(e -> {
 			String formula = inputField.getText();
 			try {
 				double result = calculator.calculate(formula);
-				resultLabel.setStyle("-fx-text-fill: white;");
+				resultLabel.setStyle("-fx-text-fill: #ff8c00");
+				resultLabel.getStyleClass().add("result-label");
 				if (result % 1 == 0) {
 					resultLabel.setText(String.format("%.0f", result));
 				} else {
 					resultLabel.setText(String.valueOf(result));
 				}
 				playSuccessSfx();
+				addScaleAnimation(resultLabel);
+
+				// Clear error label
+				errorLabel.setText("");
+				errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 			} catch (Exception ex) {
+				resultLabel.setText("");
 				playErrorSfx();
-				resultLabel.setStyle("-fx-text-fill: red;");
-				resultLabel.setText("Error: " + ex.getMessage());
+				errorLabel.setText("" + ex.getMessage());
+				addErrorAnimation(errorLabel);
 			}
 		});
 
 //		Result VBox
-		resultVbox.getChildren().addAll(resultTitle, resultLabel);
-		resultVbox.setStyle("-fx-background-color: #1C2541;");
+		resultVbox.getChildren().addAll(labelsStackPane);
+		resultVbox.setStyle("-fx-background-color: #f2f2f2;");
 
-		root.getChildren().addAll(inputFieldHbox, numbersAndOperatorsGrid, calculateButton, resultVbox);
+		root.getChildren().addAll(inputFieldHbox, resultVbox, numbersAndOperatorsGrid, calculateButton);
+
+//		History HBox
 
 //		Main Window and Scene Title call
 		scene1 = new Scene(root);
@@ -254,6 +277,46 @@ public class MainApp extends Application {
 		sfxPlayer = new MediaPlayer(buttonClick);
 		sfxPlayer.setVolume(0.5);
 		sfxPlayer.play();
+	}
+
+//	Result Scale Animation
+	public void addScaleAnimation(Label label) {
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(2), label);
+//		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		scaleTransition.setFromX(1);
+		scaleTransition.setToX(1.4);
+		scaleTransition.setFromY(1);
+		scaleTransition.setToY(1.4);
+		scaleTransition.setAutoReverse(true);
+		scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		scaleTransition.setOnFinished(event -> scaleTransition.stop());
+		scaleTransition.play();
+
+	}
+
+//	Error Animation
+	public void addErrorAnimation(Label label) {
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), label);
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		scaleTransition.setFromX(1);
+		scaleTransition.setToX(1.4);
+		scaleTransition.setFromY(1);
+		scaleTransition.setToY(1.4);
+		scaleTransition.setAutoReverse(true);
+		scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		rotateTransition.setByAngle(360);
+		rotateTransition.setAxis(Rotate.Y_AXIS);
+		rotateTransition.setAutoReverse(true);
+		rotateTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		scaleTransition.setOnFinished(event -> scaleTransition.stop());
+		rotateTransition.setOnFinished(event -> rotateTransition.stop());
+
+		scaleTransition.play();
+		rotateTransition.play();
+
 	}
 
 }
