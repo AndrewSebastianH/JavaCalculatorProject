@@ -7,6 +7,9 @@ public class CalculatorImpl implements Calculator {
 	@Override
 	public double calculate(String formula) {
 		formula = formula.replaceAll("\\s", "");
+		if (formula.isEmpty()) {
+			throw new IllegalArgumentException("Formula is empty");
+		}
 
 		Stack<Double> operands = new Stack<>();
 		Stack<Character> operators = new Stack<>();
@@ -54,6 +57,11 @@ public class CalculatorImpl implements Calculator {
 				}
 
 			} else if (isOperator(currentChar)) {
+				if (i == 0 && (currentChar == '+' || currentChar == '/' || currentChar == '*' || currentChar == '.'
+						|| currentChar == '^')) {
+					throw new IllegalArgumentException("Invalid operator position");
+
+				}
 				while (!operators.isEmpty() && hasHigherOrEqualPrecedence(operators.peek(), currentChar)) {
 					evaluate(operands, operators);
 				}
