@@ -203,13 +203,13 @@ class CalculatorImplTest {
 
 	@Test
 	void testSquareRoot() {
-		double result = formula.calculate("sqrt(16)");
+		double result = formula.calculate("√16");
 		Assertions.assertEquals(4, result, 0);
 	}
 
 	@Test
 	void testMixedExponentiationAndSquareRoot() {
-		double result = formula.calculate("2^3 + sqrt(25)");
+		double result = formula.calculate("2^3 + √25");
 		Assertions.assertEquals(13, result, 0);
 	}
 

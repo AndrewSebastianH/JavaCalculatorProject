@@ -49,12 +49,8 @@ public class CalculatorImpl implements Calculator {
 					evaluate(operands, operators);
 				}
 				operators.push(currentChar);
-			} else if (currentChar == '^') {
-				operators.push(currentChar);
-			} else if (currentChar == 's' && i + 3 < formula.length() && formula.substring(i, i + 4).equals("sqrt")) {
-				operators.push('s');
-				i += 3; // Skip 's', 'q', 'r', 't' characters
 			}
+
 		}
 
 		while (!operators.isEmpty()) {
@@ -74,32 +70,40 @@ public class CalculatorImpl implements Calculator {
 
 	private void evaluate(Stack<Double> operands, Stack<Character> operators) {
 		char operator = operators.pop();
-		if (operator == 's') {
-			double operand = operands.pop();
-			double result = Math.sqrt(operand);
-			operands.push(result);
+		double result;
+		if (operator == '√') {
+			double operand2 = operands.pop();
+			result = applyOperator(0, operand2, operator);
 		} else {
 			double operand2 = operands.pop();
 			double operand1 = operands.pop();
-			double result = applyOperator(operand1, operand2, operator);
-			operands.push(result);
+			result = applyOperator(operand1, operand2, operator);
 		}
+		operands.push(result);
 	}
 
 	private boolean isOperator(char ch) {
-		return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+		return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^' || ch == '√';
 	}
 
-	private boolean hasHigherOrEqualPrecedence(char op1, char op2) {
-		if (op1 == '*' || op1 == '/' || op1 == '^') {
-			return (op1 == '*' || op1 == '/' || op1 == '^')
-					&& (op2 == '^' || op2 == '/' || op2 == '*' || op2 == '+' || op2 == '-');
+	private int getPrecedence(char operator) {
+		if (operator == '+' || operator == '-') {
+			return 1;
+		} else if (operator == '*' || operator == '/') {
+			return 2;
+		} else if (operator == '^' || operator == '√') {
+			return 3;
 		} else {
-			return (op1 == '+' || op1 == '-') && (op2 == '+' || op2 == '-');
+			return 0; // Default precedence for unknown operators
 		}
 	}
 
+	private boolean hasHigherOrEqualPrecedence(char op1, char op2) {
+		return getPrecedence(op1) >= getPrecedence(op2);
+	}
+
 	private double applyOperator(double operand1, double operand2, char operator) {
+
 		switch (operator) {
 		case '+':
 			return operand1 + operand2;
@@ -114,6 +118,8 @@ public class CalculatorImpl implements Calculator {
 			return operand1 / operand2;
 		case '^':
 			return Math.pow(operand1, operand2);
+		case '√':
+			return Math.sqrt(operand2);
 		default:
 			throw new IllegalArgumentException("Invalid operator: " + operator);
 		}
