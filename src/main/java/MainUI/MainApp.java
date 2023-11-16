@@ -35,9 +35,9 @@ public class MainApp extends Application {
 
 //		Window size
 		window = primaryStage;
-		window.setMaxHeight(580);
+		window.setMaxHeight(700);
 		window.setMaxWidth(480);
-		window.setMinHeight(580);
+		window.setMinHeight(600);
 		window.setMinWidth(480);
 
 //		Calculator logic call
@@ -48,7 +48,7 @@ public class MainApp extends Application {
 		primaryStage.getIcons().add(gigachad);
 
 //		Root element
-		VBox root = new VBox(15);
+		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setStyle("-fx-background-color: #f2f2f2;");
 
@@ -57,7 +57,8 @@ public class MainApp extends Application {
 		inputFieldHbox.setPadding(new Insets(15, 12, 15, 12));
 		inputFieldHbox.setAlignment(Pos.CENTER);
 		inputFieldHbox.setMaxWidth(Double.MAX_VALUE);
-		inputFieldHbox.setStyle("-fx-background-color: #1C2541; -fx-font-size: 16pt;");
+		inputFieldHbox.setStyle(
+				"-fx-background-color: radial-gradient(center 80% 20%, radius 75%, #FFD60A, #FF9F1C); -fx-font-size: 16pt;");
 
 //		Main Formula Input Field
 		TextField inputField = new TextField();
@@ -70,7 +71,7 @@ public class MainApp extends Application {
 
 //		Grid - Number Buttons  
 		GridPane numbersGrid = new GridPane();
-		numbersGrid.setPadding(new Insets(10, 10, 10, 10));
+		numbersGrid.setPadding(new Insets(25, 10, 25, 10));
 		numbersGrid.setVgap(10);
 		numbersGrid.setHgap(10);
 
@@ -112,7 +113,7 @@ public class MainApp extends Application {
 
 //		Grid - Operators Button
 		GridPane operatorsGrid = new GridPane();
-		operatorsGrid.setPadding(new Insets(10, 10, 10, 10));
+		operatorsGrid.setPadding(new Insets(25, 10, 25, 10));
 		operatorsGrid.setVgap(10);
 		operatorsGrid.setHgap(10);
 
@@ -140,16 +141,13 @@ public class MainApp extends Application {
 //		Calculate Button
 		Button calculateButton = new Button("CALCULATE");
 		calculateButton.getStyleClass().add("calculate-button");
-
+		calculateButton.setPadding(new Insets(15, 0, 20, 0));
 		calculateButton.setMinSize(445, 50);
 
 		VBox resultVbox = new VBox();
-		resultVbox.setPadding(new Insets(15, 0, 20, 0));
+		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
 		resultVbox.setAlignment(Pos.CENTER);
 		resultVbox.setMinHeight(120);
-
-		Label resultTitle = new Label("RESULT");
-		resultTitle.getStyleClass().add("result-title");
 
 		Label resultLabel = new Label();
 		resultLabel.getStyleClass().add("result");
@@ -158,7 +156,8 @@ public class MainApp extends Application {
 			String formula = inputField.getText();
 			try {
 				double result = calculator.calculate(formula);
-				resultLabel.setStyle("-fx-text-fill: white;");
+				resultLabel.setStyle("-fx-text-fill: #ff8c00");
+				resultLabel.getStyleClass().add("result-label");
 				if (result % 1 == 0) {
 					resultLabel.setText(String.format("%.0f", result));
 				} else {
@@ -167,16 +166,18 @@ public class MainApp extends Application {
 				playSuccessSfx();
 			} catch (Exception ex) {
 				playErrorSfx();
-				resultLabel.setStyle("-fx-text-fill: red;");
+				resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 				resultLabel.setText("Error: " + ex.getMessage());
 			}
 		});
 
 //		Result VBox
-		resultVbox.getChildren().addAll(resultTitle, resultLabel);
-		resultVbox.setStyle("-fx-background-color: #1C2541;");
+		resultVbox.getChildren().addAll(resultLabel);
+		resultVbox.setStyle("-fx-background-color: #f2f2f2;");
 
-		root.getChildren().addAll(inputFieldHbox, numbersAndOperatorsGrid, calculateButton, resultVbox);
+		root.getChildren().addAll(inputFieldHbox, resultVbox, numbersAndOperatorsGrid, calculateButton);
+
+//		History HBox
 
 //		Main Window and Scene Title call
 		scene1 = new Scene(root);
