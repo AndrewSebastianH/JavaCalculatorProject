@@ -218,4 +218,10 @@ class CalculatorImplTest {
 		double result = formula.calculate("5(5+2)");
 		Assertions.assertEquals(35, result, 0);
 	}
+
+	@Test
+	void testMultiplyWithoutStar2() {
+		double result = formula.calculate("(6)5");
+		Assertions.assertEquals(30, result, 0);
+	}
 }

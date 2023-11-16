@@ -44,6 +44,11 @@ public class CalculatorImpl implements Calculator {
 					evaluate(operands, operators);
 				}
 				operators.pop(); // Remove the '(' from the stack
+
+				if (i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))) {
+					operators.push('*');
+				}
+
 			} else if (isOperator(currentChar)) {
 				while (!operators.isEmpty() && hasHigherOrEqualPrecedence(operators.peek(), currentChar)) {
 					evaluate(operands, operators);
