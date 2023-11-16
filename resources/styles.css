@@ -61,8 +61,6 @@ Button {
     -fx-background-color: radial-gradient(center 80% 20%, radius 75%, #FFC000, #FF8C00);
 }
 
-
- 
  .ac-button {
  	-fx-background-color: #ff8c00;
  	-fx-text-fill: white;

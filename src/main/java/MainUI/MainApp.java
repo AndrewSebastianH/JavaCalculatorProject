@@ -298,7 +298,7 @@ public class MainApp extends Application {
 //	Error Animation
 	public void addErrorAnimation(Label label) {
 		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), label);
-		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(3), label);
 		scaleTransition.setFromX(1);
 		scaleTransition.setToX(1.4);
 		scaleTransition.setFromY(1);
@@ -308,7 +308,6 @@ public class MainApp extends Application {
 
 		rotateTransition.setByAngle(360);
 		rotateTransition.setAxis(Rotate.Y_AXIS);
-		rotateTransition.setAutoReverse(true);
 		rotateTransition.setCycleCount(ScaleTransition.INDEFINITE);
 
 		scaleTransition.setOnFinished(event -> scaleTransition.stop());
