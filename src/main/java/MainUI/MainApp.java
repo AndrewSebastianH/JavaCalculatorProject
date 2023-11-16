@@ -47,6 +47,7 @@ public class MainApp extends Application {
 		songs = new ArrayList<>();
 		songs.add("/sounds/chill.mp3");
 		songs.add("/sounds/gigachad.mp3");
+		songs.add("/sounds/post malone - circles.mp3");
 		songs.add("/sounds/Michael Buble - Sway.mp3");
 
 // 		Initialize the media player with the first song
