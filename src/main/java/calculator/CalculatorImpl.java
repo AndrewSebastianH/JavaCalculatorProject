@@ -57,6 +57,10 @@ public class CalculatorImpl implements Calculator {
 				}
 
 			} else if (isOperator(currentChar)) {
+				if (i > 0 && currentChar == '√' && Character.isDigit(formula.charAt(i - 1))) {
+					// If the previous character is a digit, add a multiplication operator
+					operators.push('*');
+				}
 				if (i == 0 && (currentChar == '+' || currentChar == '/' || currentChar == '*' || currentChar == '.'
 						|| currentChar == '^')) {
 					throw new IllegalArgumentException("Invalid operator position");
