@@ -1,0 +1,91 @@
+ /* styles.css */
+ /*@font-face {
+  font-family: 'Poppins SemiBold';
+  src: url('/font/Poppins-SemiBold.ttf');
+  font-style: normal;
+  font-weight: 600;
+} */
+
+ * {
+    -fx-font-family: "Poppins SemiBold";
+ }
+
+ label {
+	-fx-font-family: 'Metropolis Semibold';
+ } 
+ 
+ Button {
+    -fx-background-color: #7d7d7d;
+    -fx-text-fill: white;
+    -fx-font-size: 13pt;
+    -fx-effect: dropshadow(three-pass-box, #DEDEDE, 2, 7, 0, 0);
+ }
+ 
+ Button:hover {
+    -fx-background-color: #B5B5B5; /* Lightened color for hover effect */
+ }
+
+ Button:pressed {
+    -fx-background-color: #555555; /* Darkened color for pressed effect */
+ }
+
+ .operator-button {
+ 	-fx-background-color: #ff8c00;
+    -fx-font-size: 18pt;
+ }
+ 
+ .operator-button:hover {
+    -fx-background-color: #FFA500;
+ }
+
+ .operator-button:pressed {
+    -fx-background-color: #FF8C00; 
+ }
+ 
+ .result-title {
+ 	-fx-text-fill: #ff8c00;
+ 	-fx-font-size: 20pt;
+ 	-fx-font-weight: bold;
+ }
+ 
+ .result {
+ 	-fx-font-size: 20pt;
+ }
+ 
+ .calculate-button {
+ 	-fx-background-color: #4CAF50;
+ 	-fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-font-size: 10pt;
+    -fx-padding: 10 20;	
+ }
+ .calculate-button:hover {
+    -fx-background-color: #45A049;
+ }
+
+ .calculate-button:pressed {
+    -fx-background-color: #388E3C;
+ }
+ 
+ .ac-button {
+ 	-fx-background-color: #ff8c00;
+ 	-fx-text-fill: white;
+    -fx-font-size: 14pt; 
+ }
+ 
+ .backspace-button {
+ 	-fx-background-color: #ff8c00;
+ 	-fx-text-fill: white;
+    -fx-font-size: 14pt; 
+ }
+ 
+ .ac-button:hover,
+ .backspace-button:hover {
+    -fx-background-color: #FFA500; 
+}
+
+ .ac-button:pressed,
+ .backspace-button:pressed {
+    -fx-background-color: #FF8C00;
+}
+ 
