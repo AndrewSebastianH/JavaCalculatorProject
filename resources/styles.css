@@ -7,12 +7,8 @@
 } */
 
  * {
-    -fx-font-family: "Poppins SemiBold";
+    -fx-font-family: "Trebuchet MS";
  }
-
- label {
-	-fx-font-family: 'Metropolis Semibold';
- } 
  
  Button {
     -fx-background-color: #7d7d7d;

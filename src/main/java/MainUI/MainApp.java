@@ -146,6 +146,7 @@ public class MainApp extends Application {
 		VBox resultVbox = new VBox();
 		resultVbox.setPadding(new Insets(15, 0, 20, 0));
 		resultVbox.setAlignment(Pos.CENTER);
+		resultVbox.setMinHeight(120);
 
 		Label resultTitle = new Label("RESULT");
 		resultTitle.getStyleClass().add("result-title");
