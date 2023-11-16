@@ -36,9 +36,9 @@ public class MainApp extends Application {
 //		Window size
 		window = primaryStage;
 		window.setMaxHeight(580);
-		window.setMaxWidth(440);
+		window.setMaxWidth(480);
 		window.setMinHeight(580);
-		window.setMinWidth(440);
+		window.setMinWidth(480);
 
 //		Calculator logic call
 		calculator = new calculator.CalculatorImpl();
@@ -117,10 +117,10 @@ public class MainApp extends Application {
 		operatorsGrid.setHgap(10);
 
 //		Operator Buttons
-		String[] operators = { "+", "-", "/", "*", "(", ")", ".", "√" };
+		String[] operators = { "+", "-", "/", "*", "(", ")", ".", "√", "^" };
 		int operatorButtonIndex = 0;
-		for (int row = 0; row < 5; row++) {
-			for (int col = 0; col < 2; col++) {
+		for (int row = 0; row < 4; row++) {
+			for (int col = 0; col < 3; col++) {
 				if (operatorButtonIndex < operators.length) {
 					Button operatorButton = new Button(operators[operatorButtonIndex]);
 					operatorButton.setMinSize(60, 50);
@@ -141,7 +141,7 @@ public class MainApp extends Application {
 		Button calculateButton = new Button("CALCULATE");
 		calculateButton.getStyleClass().add("calculate-button");
 
-		calculateButton.setMinSize(380, 50);
+		calculateButton.setMinSize(445, 50);
 
 		VBox resultVbox = new VBox();
 		resultVbox.setPadding(new Insets(15, 0, 20, 0));
