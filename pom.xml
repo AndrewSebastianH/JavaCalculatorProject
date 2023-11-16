@@ -2,7 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>a</groupId>
   <artifactId>a</artifactId>
-  <version>0.0.1-SNAPSHOT</version><build>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
 		<plugins>
 			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
 			<plugin>
@@ -36,7 +37,16 @@
                 </executions>
             </plugin>
 		</plugins>
-	</build>
+		
+		<!-- Resources -->
+	    <resources>
+	        <resource>
+	            <directory>resources</directory>
+	            <targetPath>${project.build.outputDirectory}</targetPath>
+	        </resource>
+	    </resources>
+
+</build>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
 		<dependency>
@@ -50,5 +60,11 @@
 	        <artifactId>javafx-controls</artifactId>
 	        <version>17</version>
     	</dependency>
+    	<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-media</artifactId>
+		    <version>17</version>
+		    <type>pom</type>
+		</dependency>
 	</dependencies>
 </project>
