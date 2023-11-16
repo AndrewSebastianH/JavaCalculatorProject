@@ -62,7 +62,7 @@ public class MainApp extends Application {
 //		Main Formula Input Field
 		TextField inputField = new TextField();
 		inputField.setPromptText("Type a formula");
-		inputField.setMinSize(375, 50);
+		inputField.setMinSize(440, 50);
 		inputField.setMaxSize(Double.MAX_VALUE, 50);
 		inputField.setFocusTraversable(false);
 
