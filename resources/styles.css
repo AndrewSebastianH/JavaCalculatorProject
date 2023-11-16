@@ -39,17 +39,17 @@ Button {
     -fx-background-color: #FF8C00; 
  }
  
- .toggle-button {
+ .music-button {
     -fx-font-size: 14pt;
     -fx-background-color: #009688;
     -fx-text-fill: white;
 }
 
-.toggle-button:hover {
+.music-button:hover {
     -fx-background-color: #00796b; 
 }
 
-.toggle-button:pressed {
+.music-button:pressed {
     -fx-background-color: #004d40;
 }
  

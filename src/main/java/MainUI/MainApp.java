@@ -1,5 +1,8 @@
 package MainUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import calculator.Calculator;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -30,14 +33,26 @@ public class MainApp extends Application {
 	Stage window;
 	Scene scene1, scene2;
 
+	private MediaPlayer mediaPlayer;
+	List<String> songs;
+	private int currentSongIndex;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
-//		Music Call
-		music();
+//		Songs array call
+		songs = new ArrayList<>();
+		songs.add("/sounds/chill.mp3");
+		songs.add("/sounds/gigachad.mp3");
+		songs.add("/sounds/Michael Buble - Sway.mp3");
+
+// 		Initialize the media player with the first song
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(0)).toString()));
+		mediaPlayer.setVolume(0.1);
+		mediaPlayer.play();
 
 //		Window size
 		window = primaryStage;
@@ -74,6 +89,22 @@ public class MainApp extends Application {
 		inputField.setFocusTraversable(false);
 
 		inputFieldHbox.getChildren().addAll(inputField);
+
+//		Result VBox
+		VBox resultVbox = new VBox();
+		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
+		resultVbox.setAlignment(Pos.CENTER);
+		resultVbox.setMinHeight(120);
+
+//		Result label
+		Label resultLabel = new Label("0");
+		resultLabel.getStyleClass().add("result-label");
+		resultLabel.setStyle("-fx-text-fill: #ff8c00");
+
+// 		Error Label
+		Label errorLabel = new Label("");
+		errorLabel.getStyleClass().add("result-label");
+		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 
 //		Grid - Number Buttons  
 		GridPane numbersGrid = new GridPane();
@@ -140,7 +171,7 @@ public class MainApp extends Application {
 		}
 // 		Pause Music Button
 		ToggleButton pauseMusicButton = new ToggleButton();
-		pauseMusicButton.getStyleClass().add("toggle-button");
+		pauseMusicButton.getStyleClass().add("music-button");
 		pauseMusicButton.setMinSize(60, 50);
 		Image playImage = new Image("/images/play.png");
 		Image pauseImage = new Image("/images/pause.png");
@@ -152,15 +183,38 @@ public class MainApp extends Application {
 		pauseMusicButton.setOnAction(e -> {
 			playButtonSfx();
 			if (pauseMusicButton.isSelected()) {
-				gigachadMusic.pause();
+				mediaPlayer.pause();
 				pauseImageView.setImage(playImage);
 			} else {
-				gigachadMusic.play();
+				mediaPlayer.play();
 				pauseImageView.setImage(pauseImage);
 			}
 		});
+		operatorsGrid.add(pauseMusicButton, 1, 3);
 
-		operatorsGrid.add(pauseMusicButton, 0, 3);
+//		PrevMusic Button
+		Button prevButton = new Button();
+		prevButton.getStyleClass().add("music-button");
+		prevButton.setMinSize(60, 50);
+		Image prevImage = new Image("/images/prev.png");
+		ImageView prevImageView = new ImageView(prevImage);
+		prevImageView.setFitHeight(25);
+		prevImageView.setFitWidth(25);
+		prevButton.setGraphic(prevImageView);
+		prevButton.setOnAction(e -> playPreviousSong());
+		operatorsGrid.add(prevButton, 0, 3);
+
+//		NextMusic Button
+		Button nextButton = new Button();
+		nextButton.getStyleClass().add("music-button");
+		nextButton.setMinSize(60, 50);
+		Image nextImage = new Image("/images/next.png");
+		ImageView nextImageView = new ImageView(nextImage);
+		nextImageView.setFitHeight(25);
+		nextImageView.setFitWidth(25);
+		nextButton.setGraphic(nextImageView);
+		nextButton.setOnAction(e -> playNextSong());
+		operatorsGrid.add(nextButton, 2, 3);
 
 //		Operators and Numbers HBox
 		HBox numbersAndOperatorsGrid = new HBox(25);
@@ -172,20 +226,6 @@ public class MainApp extends Application {
 		calculateButton.getStyleClass().add("calculate-button");
 		calculateButton.setPadding(new Insets(15, 0, 20, 0));
 		calculateButton.setMinSize(445, 50);
-
-		VBox resultVbox = new VBox();
-		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
-		resultVbox.setAlignment(Pos.CENTER);
-		resultVbox.setMinHeight(120);
-
-		Label resultLabel = new Label("0");
-		resultLabel.getStyleClass().add("result-label");
-		resultLabel.setStyle("-fx-text-fill: #ff8c00");
-
-// 		Error Label
-		Label errorLabel = new Label("");
-		errorLabel.getStyleClass().add("result-label");
-		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 
 //		StackPane to stack the labels
 		StackPane labelsStackPane = new StackPane();
@@ -227,8 +267,6 @@ public class MainApp extends Application {
 
 		root.getChildren().addAll(inputFieldHbox, resultVbox, numbersAndOperatorsGrid, calculateButton);
 
-//		History HBox
-
 //		Main Window and Scene Title call
 		scene1 = new Scene(root);
 		scene1.getStylesheets().add("./styles.css");
@@ -263,18 +301,7 @@ public class MainApp extends Application {
 		});
 	}
 
-//  Music
-	MediaPlayer gigachadMusic;
-
-	public void music() {
-		String source = "/sounds/gigachad.mp3";
-		Media music = new Media(getClass().getResource(source).toExternalForm());
-		gigachadMusic = new MediaPlayer(music);
-		gigachadMusic.setVolume(0.05);
-		gigachadMusic.play();
-
-	}
-
+//  Initialize SFX Player
 	MediaPlayer sfxPlayer;
 
 //	Play button SFX
@@ -344,6 +371,24 @@ public class MainApp extends Application {
 		scaleTransition.play();
 		rotateTransition.play();
 
+	}
+
+//	Play Next Song
+	private void playNextSong() {
+		mediaPlayer.stop();
+		currentSongIndex = (currentSongIndex + 1) % songs.size();
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
+		mediaPlayer.setVolume(0.35);
+		mediaPlayer.play();
+	}
+
+//  Play Previous Song
+	private void playPreviousSong() {
+		mediaPlayer.stop();
+		currentSongIndex = (currentSongIndex - 1 + songs.size()) % songs.size();
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
+		mediaPlayer.setVolume(0.35);
+		mediaPlayer.play();
 	}
 
 }
