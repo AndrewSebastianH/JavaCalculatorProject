@@ -51,7 +51,7 @@ public class MainApp extends Application {
 
 // 		Initialize the media player with the first song
 		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(0)).toString()));
-		mediaPlayer.setVolume(0.1);
+		mediaPlayer.setVolume(0.15);
 		mediaPlayer.play();
 
 //		Window size
@@ -124,6 +124,7 @@ public class MainApp extends Application {
 			}
 		}
 
+//      Zero Button
 		Button zeroButton = new Button("0");
 		zeroButton.setMinSize(60, 50);
 		addButtonTextToInputField(zeroButton, inputField);
@@ -169,6 +170,7 @@ public class MainApp extends Application {
 				}
 			}
 		}
+
 // 		Pause Music Button
 		ToggleButton pauseMusicButton = new ToggleButton();
 		pauseMusicButton.getStyleClass().add("music-button");
@@ -201,7 +203,10 @@ public class MainApp extends Application {
 		prevImageView.setFitHeight(25);
 		prevImageView.setFitWidth(25);
 		prevButton.setGraphic(prevImageView);
-		prevButton.setOnAction(e -> playPreviousSong());
+		prevButton.setOnAction(e -> {
+			playPreviousSong();
+			playButtonSfx();
+		});
 		operatorsGrid.add(prevButton, 0, 3);
 
 //		NextMusic Button
@@ -213,7 +218,10 @@ public class MainApp extends Application {
 		nextImageView.setFitHeight(25);
 		nextImageView.setFitWidth(25);
 		nextButton.setGraphic(nextImageView);
-		nextButton.setOnAction(e -> playNextSong());
+		nextButton.setOnAction(e -> {
+			playNextSong();
+			playButtonSfx();
+		});
 		operatorsGrid.add(nextButton, 2, 3);
 
 //		Operators and Numbers HBox
@@ -323,6 +331,7 @@ public class MainApp extends Application {
 		String source = "/sounds/errorfart.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
 		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.setVolume(0.4);
 		sfxPlayer.play();
 	}
 
@@ -378,7 +387,7 @@ public class MainApp extends Application {
 		mediaPlayer.stop();
 		currentSongIndex = (currentSongIndex + 1) % songs.size();
 		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
-		mediaPlayer.setVolume(0.35);
+		mediaPlayer.setVolume(0.15);
 		mediaPlayer.play();
 	}
 
@@ -387,7 +396,7 @@ public class MainApp extends Application {
 		mediaPlayer.stop();
 		currentSongIndex = (currentSongIndex - 1 + songs.size()) % songs.size();
 		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
-		mediaPlayer.setVolume(0.35);
+		mediaPlayer.setVolume(0.15);
 		mediaPlayer.play();
 	}
 
