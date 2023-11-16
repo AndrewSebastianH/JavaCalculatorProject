@@ -163,6 +163,7 @@ public class MainApp extends Application {
 				} else {
 					resultLabel.setText(String.valueOf(result));
 				}
+				playSuccessSfx();
 			} catch (Exception ex) {
 				playErrorSfx();
 				resultLabel.setStyle("-fx-text-fill: red;");
@@ -222,28 +223,36 @@ public class MainApp extends Application {
 
 	}
 
-	MediaPlayer buttonSfxPlayer;
+	MediaPlayer sfxPlayer;
 
 //	Play button SFX
 	public void playButtonSfx() {
 		String source = "/sounds/button-click.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
 	}
 
 	public void playButtonSfx2() {
 		String source = "/sounds/button-click2.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
 	}
 
 	public void playErrorSfx() {
 		String source = "/sounds/errorfart.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
-		buttonSfxPlayer = new MediaPlayer(buttonClick);
-		buttonSfxPlayer.play();
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.play();
+	}
+
+	public void playSuccessSfx() {
+		String source = "/sounds/success.mp3";
+		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
+		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.setVolume(0.5);
+		sfxPlayer.play();
 	}
 
 }
