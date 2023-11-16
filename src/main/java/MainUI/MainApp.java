@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -137,6 +138,29 @@ public class MainApp extends Application {
 				}
 			}
 		}
+// 		Pause Music Button
+		ToggleButton pauseMusicButton = new ToggleButton();
+		pauseMusicButton.getStyleClass().add("toggle-button");
+		pauseMusicButton.setMinSize(60, 50);
+		Image playImage = new Image("/images/play.png");
+		Image pauseImage = new Image("/images/pause.png");
+		ImageView pauseImageView = new ImageView(pauseImage);
+		pauseImageView.setFitWidth(25);
+		pauseImageView.setFitHeight(25);
+		pauseMusicButton.setGraphic(pauseImageView);
+
+		pauseMusicButton.setOnAction(e -> {
+			playButtonSfx();
+			if (pauseMusicButton.isSelected()) {
+				gigachadMusic.pause();
+				pauseImageView.setImage(playImage);
+			} else {
+				gigachadMusic.play();
+				pauseImageView.setImage(pauseImage);
+			}
+		});
+
+		operatorsGrid.add(pauseMusicButton, 0, 3);
 
 //		Operators and Numbers HBox
 		HBox numbersAndOperatorsGrid = new HBox(25);
@@ -188,7 +212,11 @@ public class MainApp extends Application {
 			} catch (Exception ex) {
 				resultLabel.setText("");
 				playErrorSfx();
-				errorLabel.setText("" + ex.getMessage());
+				if (ex.getMessage() == null) {
+					errorLabel.setText("An error occurred.");
+				} else {
+					errorLabel.setText(ex.getMessage());
+				}
 				addErrorAnimation(errorLabel);
 			}
 		});

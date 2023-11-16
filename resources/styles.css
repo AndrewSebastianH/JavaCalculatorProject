@@ -39,6 +39,19 @@ Button {
     -fx-background-color: #FF8C00; 
  }
  
+ .toggle-button {
+    -fx-font-size: 14pt;
+    -fx-background-color: #009688;
+    -fx-text-fill: white;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #00796b; 
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #004d40;
+}
  
  .result-label {
  	-fx-font-size: 30pt;
