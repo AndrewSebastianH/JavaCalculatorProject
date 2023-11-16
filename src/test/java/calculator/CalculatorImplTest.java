@@ -195,6 +195,7 @@ class CalculatorImplTest {
 		Assertions.assertEquals(2, result, 0);
 	}
 
+//	Custom Unit test
 	@Test
 	void testExponentiation() {
 		double result = formula.calculate("2^3");
