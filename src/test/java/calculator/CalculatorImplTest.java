@@ -212,4 +212,10 @@ class CalculatorImplTest {
 		double result = formula.calculate("2^3 + sqrt(25)");
 		Assertions.assertEquals(13, result, 0);
 	}
+
+	@Test
+	void testMultiplyWithoutStar() {
+		double result = formula.calculate("5(5+2)");
+		Assertions.assertEquals(35, result, 0);
+	}
 }

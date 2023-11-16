@@ -34,6 +34,10 @@ public class CalculatorImpl implements Calculator {
 
 				operands.push(Double.parseDouble(numBuilder.toString()));
 			} else if (currentChar == '(') {
+				if (i > 0 && Character.isDigit(formula.charAt(i - 1))) {
+					// If the previous character is a digit, add a multiplication operator
+					operators.push('*');
+				}
 				operators.push(currentChar);
 			} else if (currentChar == ')') {
 				while (!operators.isEmpty() && operators.peek() != '(') {

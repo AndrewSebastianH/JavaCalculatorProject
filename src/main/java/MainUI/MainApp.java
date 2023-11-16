@@ -1,5 +1,7 @@
 package MainUI;
 
+import java.nio.file.Paths;
+
 import calculator.Calculator;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -13,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -28,6 +32,9 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		// start musik
+		music();
+
 //		Window size
 		window = primaryStage;
 		window.setMaxHeight(580);
@@ -197,6 +204,17 @@ public class MainApp extends Application {
 		button.setOnAction(e -> {
 			inputField.setText("");
 		});
+	}
+
+	// Muisk
+	MediaPlayer mediaPlayer;
+
+	public void music() {
+		String s = "gigachad.mp3";
+		Media h = new Media(Paths.get(s).toUri().toString());
+		mediaPlayer = new MediaPlayer(h);
+		mediaPlayer.play();
+
 	}
 
 }
