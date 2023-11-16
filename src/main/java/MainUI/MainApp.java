@@ -149,8 +149,9 @@ public class MainApp extends Application {
 		resultVbox.setAlignment(Pos.CENTER);
 		resultVbox.setMinHeight(120);
 
-		Label resultLabel = new Label();
-		resultLabel.getStyleClass().add("result");
+		Label resultLabel = new Label("0");
+		resultLabel.getStyleClass().add("result-label");
+		resultLabel.setStyle("-fx-text-fill: #ff8c00");
 
 		calculateButton.setOnAction(e -> {
 			String formula = inputField.getText();
