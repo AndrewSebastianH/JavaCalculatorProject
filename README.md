@@ -1,5 +1,5 @@
 # JavaCalculatorProject
-
+### By Andrew Sebastian H. & Nathanael Owen K.
 ### How to run:
 1. Run Maven Install
 2. Create a new Maven Run Configuration in your Eclipse IDE (Right Click the project folder -> Run As -> New Configuration)
