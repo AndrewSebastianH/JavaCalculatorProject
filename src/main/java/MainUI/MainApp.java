@@ -188,7 +188,7 @@ public class MainApp extends Application {
 			} catch (Exception ex) {
 				resultLabel.setText("");
 				playErrorSfx();
-				errorLabel.setText("Error: " + ex.getMessage());
+				errorLabel.setText("" + ex.getMessage());
 				addErrorAnimation(errorLabel);
 			}
 		});
