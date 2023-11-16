@@ -12,8 +12,6 @@ public class CalculatorImpl implements Calculator {
 		Stack<Character> operators = new Stack<>();
 
 		for (int i = 0; i < formula.length(); i++) {
-			System.out.println("Operands: " + operands);
-			System.out.println("Operators: " + operators);
 			char currentChar = formula.charAt(i);
 
 			if (Character.isDigit(currentChar)
@@ -40,12 +38,18 @@ public class CalculatorImpl implements Calculator {
 				}
 				operators.push(currentChar);
 			} else if (currentChar == ')') {
+				// Throw exception if there are unused closing bracket
+				if (operators.isEmpty()) {
+					throw new IllegalArgumentException("Invalid bracket.");
+
+				}
 				while (!operators.isEmpty() && operators.peek() != '(') {
 					evaluate(operands, operators);
 				}
 				operators.pop(); // Remove the '(' from the stack
 
 				if (i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))) {
+					// If the next character is a digit, add a multiplication operator
 					operators.push('*');
 				}
 
@@ -59,17 +63,13 @@ public class CalculatorImpl implements Calculator {
 		}
 
 		while (!operators.isEmpty()) {
-			System.out.println("Sblm evaluate Operands 2: " + operands);
-			System.out.println("Sblm evaluate Operators 2: " + operators);
-
+			// Throw exception if there are still not closed brackets
+			if (operators.contains('(')) {
+				throw new IllegalArgumentException("Brackets not closed.");
+			}
 			evaluate(operands, operators);
 
-			System.out.println("Operands 2: " + operands);
-			System.out.println("Operators 2: " + operators);
-
 		}
-		System.out.println("Final Operands: " + operands);
-		System.out.println("Final Operators: " + operators);
 		return operands.pop();
 	}
 
