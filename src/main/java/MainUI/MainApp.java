@@ -1,7 +1,5 @@
 package MainUI;
 
-import java.nio.file.Paths;
-
 import calculator.Calculator;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -32,7 +30,7 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		// start musik
+//		Music Call
 		music();
 
 //		Window size
@@ -166,6 +164,7 @@ public class MainApp extends Application {
 					resultLabel.setText(String.valueOf(result));
 				}
 			} catch (Exception ex) {
+				playErrorSfx();
 				resultLabel.setStyle("-fx-text-fill: red;");
 				resultLabel.setText("Error: " + ex.getMessage());
 			}
@@ -188,7 +187,10 @@ public class MainApp extends Application {
 
 //	Numbers or Operator Button Function handler
 	private void addButtonTextToInputField(Button button, TextField inputField) {
-		button.setOnAction(e -> inputField.appendText(button.getText() + " "));
+		button.setOnAction(e -> {
+			inputField.appendText(button.getText() + " ");
+			playButtonSfx();
+		});
 	}
 
 //	Remove button handler
@@ -196,6 +198,7 @@ public class MainApp extends Application {
 		button.setOnAction(e -> {
 			String currentText = inputField.getText();
 			inputField.setText(currentText.length() >= 2 ? currentText.substring(0, currentText.length() - 2) : "");
+			playButtonSfx2();
 		});
 	}
 
@@ -203,18 +206,44 @@ public class MainApp extends Application {
 	private void ACButtonClick(Button button, TextField inputField) {
 		button.setOnAction(e -> {
 			inputField.setText("");
+			playButtonSfx2();
 		});
 	}
 
-	// Muisk
-	MediaPlayer mediaPlayer;
+//  Music
+	MediaPlayer gigachadMusic;
 
 	public void music() {
-		String s = "gigachad.mp3";
-		Media h = new Media(Paths.get(s).toUri().toString());
-		mediaPlayer = new MediaPlayer(h);
-		mediaPlayer.play();
+		String source = "/sounds/gigachad.mp3";
+		Media music = new Media(getClass().getResource(source).toExternalForm());
+		gigachadMusic = new MediaPlayer(music);
+		gigachadMusic.setVolume(0.05);
+		gigachadMusic.play();
 
+	}
+
+	MediaPlayer buttonSfxPlayer;
+
+//	Play button SFX
+	public void playButtonSfx() {
+		String source = "/sounds/button-click.mp3";
+		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
+		buttonSfxPlayer = new MediaPlayer(buttonClick);
+		buttonSfxPlayer.play();
+	}
+
+	public void playButtonSfx2() {
+		String source = "/sounds/button-click2.mp3";
+		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
+		buttonSfxPlayer = new MediaPlayer(buttonClick);
+		buttonSfxPlayer.play();
+	}
+
+	public void playErrorSfx() {
+		String source = "/sounds/errorfart.mp3";
+		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
+		buttonSfxPlayer = new MediaPlayer(buttonClick);
+		buttonSfxPlayer.play();
 	}
 
 }
