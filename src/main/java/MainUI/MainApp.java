@@ -1,6 +1,8 @@
 package MainUI;
 
 import calculator.Calculator;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,10 +14,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainApp extends Application {
 
@@ -153,6 +158,16 @@ public class MainApp extends Application {
 		resultLabel.getStyleClass().add("result-label");
 		resultLabel.setStyle("-fx-text-fill: #ff8c00");
 
+// 		Error Label
+		Label errorLabel = new Label("");
+		errorLabel.getStyleClass().add("result-label");
+		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
+
+//		StackPane to stack the labels
+		StackPane labelsStackPane = new StackPane();
+		labelsStackPane.setAlignment(Pos.CENTER);
+		labelsStackPane.getChildren().addAll(resultLabel, errorLabel);
+
 		calculateButton.setOnAction(e -> {
 			String formula = inputField.getText();
 			try {
@@ -165,15 +180,21 @@ public class MainApp extends Application {
 					resultLabel.setText(String.valueOf(result));
 				}
 				playSuccessSfx();
+				addScaleAnimation(resultLabel);
+
+				// Clear error label
+				errorLabel.setText("");
+				errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 			} catch (Exception ex) {
+				resultLabel.setText("");
 				playErrorSfx();
-				resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
-				resultLabel.setText("Error: " + ex.getMessage());
+				errorLabel.setText("Error: " + ex.getMessage());
+				addErrorAnimation(errorLabel);
 			}
 		});
 
 //		Result VBox
-		resultVbox.getChildren().addAll(resultLabel);
+		resultVbox.getChildren().addAll(labelsStackPane);
 		resultVbox.setStyle("-fx-background-color: #f2f2f2;");
 
 		root.getChildren().addAll(inputFieldHbox, resultVbox, numbersAndOperatorsGrid, calculateButton);
@@ -256,6 +277,46 @@ public class MainApp extends Application {
 		sfxPlayer = new MediaPlayer(buttonClick);
 		sfxPlayer.setVolume(0.5);
 		sfxPlayer.play();
+	}
+
+//	Result Scale Animation
+	public void addScaleAnimation(Label label) {
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(2), label);
+//		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		scaleTransition.setFromX(1);
+		scaleTransition.setToX(1.4);
+		scaleTransition.setFromY(1);
+		scaleTransition.setToY(1.4);
+		scaleTransition.setAutoReverse(true);
+		scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		scaleTransition.setOnFinished(event -> scaleTransition.stop());
+		scaleTransition.play();
+
+	}
+
+//	Error Animation
+	public void addErrorAnimation(Label label) {
+		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), label);
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		scaleTransition.setFromX(1);
+		scaleTransition.setToX(1.4);
+		scaleTransition.setFromY(1);
+		scaleTransition.setToY(1.4);
+		scaleTransition.setAutoReverse(true);
+		scaleTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		rotateTransition.setByAngle(360);
+		rotateTransition.setAxis(Rotate.Y_AXIS);
+		rotateTransition.setAutoReverse(true);
+		rotateTransition.setCycleCount(ScaleTransition.INDEFINITE);
+
+		scaleTransition.setOnFinished(event -> scaleTransition.stop());
+		rotateTransition.setOnFinished(event -> rotateTransition.stop());
+
+		scaleTransition.play();
+		rotateTransition.play();
+
 	}
 
 }
