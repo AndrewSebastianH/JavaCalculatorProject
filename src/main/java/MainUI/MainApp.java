@@ -54,6 +54,7 @@ public class MainApp extends Application {
 		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(0)).toString()));
 		mediaPlayer.setVolume(0.15);
 		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(() -> playNextSong());
 
 //		Window size
 		window = primaryStage;
