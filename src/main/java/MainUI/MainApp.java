@@ -32,7 +32,7 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		// start musik
+//		Music
 		music();
 
 //		Window size
@@ -206,13 +206,14 @@ public class MainApp extends Application {
 		});
 	}
 
-	// Muisk
+//  Music
 	MediaPlayer mediaPlayer;
 
 	public void music() {
-		String s = "gigachad.mp3";
-		Media h = new Media(Paths.get(s).toUri().toString());
-		mediaPlayer = new MediaPlayer(h);
+		String source = "gigachad.mp3";
+		Media music = new Media(Paths.get(source).toUri().toString());
+		mediaPlayer = new MediaPlayer(music);
+		mediaPlayer.setVolume(0.05);
 		mediaPlayer.play();
 
 	}
