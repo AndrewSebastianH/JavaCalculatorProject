@@ -225,4 +225,10 @@ class CalculatorImplTest {
 		double result = formula.calculate("(6)5");
 		Assertions.assertEquals(30, result, 0);
 	}
+
+	@Test
+	void testSquareRoot2() {
+		double result = formula.calculate("9√9");
+		Assertions.assertEquals(27, result, 0);
+	}
 }
