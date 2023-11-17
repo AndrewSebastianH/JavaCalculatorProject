@@ -39,6 +39,19 @@ Button {
     -fx-background-color: #FF8C00; 
  }
  
+ .music-button {
+    -fx-font-size: 14pt;
+    -fx-background-color: #009688;
+    -fx-text-fill: white;
+}
+
+.music-button:hover {
+    -fx-background-color: #00796b; 
+}
+
+.music-button:pressed {
+    -fx-background-color: #004d40;
+}
  
  .result-label {
  	-fx-font-size: 30pt;
@@ -61,8 +74,6 @@ Button {
     -fx-background-color: radial-gradient(center 80% 20%, radius 75%, #FFC000, #FF8C00);
 }
 
-
- 
  .ac-button {
  	-fx-background-color: #ff8c00;
  	-fx-text-fill: white;

@@ -1,5 +1,8 @@
 package MainUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import calculator.Calculator;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -10,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -29,14 +33,28 @@ public class MainApp extends Application {
 	Stage window;
 	Scene scene1, scene2;
 
+	private MediaPlayer mediaPlayer;
+	List<String> songs;
+	private int currentSongIndex;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
-//		Music Call
-		music();
+//		Songs array call
+		songs = new ArrayList<>();
+		songs.add("/sounds/chill.mp3");
+		songs.add("/sounds/gigachad.mp3");
+		songs.add("/sounds/post malone - circles.mp3");
+		songs.add("/sounds/Michael Buble - Sway.mp3");
+
+// 		Initialize the media player with the first song
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(0)).toString()));
+		mediaPlayer.setVolume(0.15);
+		mediaPlayer.play();
+		mediaPlayer.setOnEndOfMedia(() -> playNextSong());
 
 //		Window size
 		window = primaryStage;
@@ -74,6 +92,22 @@ public class MainApp extends Application {
 
 		inputFieldHbox.getChildren().addAll(inputField);
 
+//		Result VBox
+		VBox resultVbox = new VBox();
+		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
+		resultVbox.setAlignment(Pos.CENTER);
+		resultVbox.setMinHeight(120);
+
+//		Result label
+		Label resultLabel = new Label("0");
+		resultLabel.getStyleClass().add("result-label");
+		resultLabel.setStyle("-fx-text-fill: #ff8c00");
+
+// 		Error Label
+		Label errorLabel = new Label("");
+		errorLabel.getStyleClass().add("result-label");
+		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
+
 //		Grid - Number Buttons  
 		GridPane numbersGrid = new GridPane();
 		numbersGrid.setPadding(new Insets(25, 10, 25, 10));
@@ -92,6 +126,7 @@ public class MainApp extends Application {
 			}
 		}
 
+//      Zero Button
 		Button zeroButton = new Button("0");
 		zeroButton.setMinSize(60, 50);
 		addButtonTextToInputField(zeroButton, inputField);
@@ -138,6 +173,59 @@ public class MainApp extends Application {
 			}
 		}
 
+// 		Pause Music Button
+		ToggleButton pauseMusicButton = new ToggleButton();
+		pauseMusicButton.getStyleClass().add("music-button");
+		pauseMusicButton.setMinSize(60, 50);
+		Image playImage = new Image("/images/play.png");
+		Image pauseImage = new Image("/images/pause.png");
+		ImageView pauseImageView = new ImageView(pauseImage);
+		pauseImageView.setFitWidth(25);
+		pauseImageView.setFitHeight(25);
+		pauseMusicButton.setGraphic(pauseImageView);
+
+		pauseMusicButton.setOnAction(e -> {
+			playButtonSfx();
+			if (pauseMusicButton.isSelected()) {
+				mediaPlayer.pause();
+				pauseImageView.setImage(playImage);
+			} else {
+				mediaPlayer.play();
+				pauseImageView.setImage(pauseImage);
+			}
+		});
+		operatorsGrid.add(pauseMusicButton, 1, 3);
+
+//		PrevMusic Button
+		Button prevButton = new Button();
+		prevButton.getStyleClass().add("music-button");
+		prevButton.setMinSize(60, 50);
+		Image prevImage = new Image("/images/prev.png");
+		ImageView prevImageView = new ImageView(prevImage);
+		prevImageView.setFitHeight(25);
+		prevImageView.setFitWidth(25);
+		prevButton.setGraphic(prevImageView);
+		prevButton.setOnAction(e -> {
+			playPreviousSong();
+			playButtonSfx();
+		});
+		operatorsGrid.add(prevButton, 0, 3);
+
+//		NextMusic Button
+		Button nextButton = new Button();
+		nextButton.getStyleClass().add("music-button");
+		nextButton.setMinSize(60, 50);
+		Image nextImage = new Image("/images/next.png");
+		ImageView nextImageView = new ImageView(nextImage);
+		nextImageView.setFitHeight(25);
+		nextImageView.setFitWidth(25);
+		nextButton.setGraphic(nextImageView);
+		nextButton.setOnAction(e -> {
+			playNextSong();
+			playButtonSfx();
+		});
+		operatorsGrid.add(nextButton, 2, 3);
+
 //		Operators and Numbers HBox
 		HBox numbersAndOperatorsGrid = new HBox(25);
 		numbersAndOperatorsGrid.setAlignment(Pos.CENTER);
@@ -148,20 +236,6 @@ public class MainApp extends Application {
 		calculateButton.getStyleClass().add("calculate-button");
 		calculateButton.setPadding(new Insets(15, 0, 20, 0));
 		calculateButton.setMinSize(445, 50);
-
-		VBox resultVbox = new VBox();
-		resultVbox.setPadding(new Insets(-20, 0, -10, 0));
-		resultVbox.setAlignment(Pos.CENTER);
-		resultVbox.setMinHeight(120);
-
-		Label resultLabel = new Label("0");
-		resultLabel.getStyleClass().add("result-label");
-		resultLabel.setStyle("-fx-text-fill: #ff8c00");
-
-// 		Error Label
-		Label errorLabel = new Label("");
-		errorLabel.getStyleClass().add("result-label");
-		errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14pt;");
 
 //		StackPane to stack the labels
 		StackPane labelsStackPane = new StackPane();
@@ -188,7 +262,11 @@ public class MainApp extends Application {
 			} catch (Exception ex) {
 				resultLabel.setText("");
 				playErrorSfx();
-				errorLabel.setText("" + ex.getMessage());
+				if (ex.getMessage() == null) {
+					errorLabel.setText("An error occurred.");
+				} else {
+					errorLabel.setText(ex.getMessage());
+				}
 				addErrorAnimation(errorLabel);
 			}
 		});
@@ -198,8 +276,6 @@ public class MainApp extends Application {
 		resultVbox.setStyle("-fx-background-color: #f2f2f2;");
 
 		root.getChildren().addAll(inputFieldHbox, resultVbox, numbersAndOperatorsGrid, calculateButton);
-
-//		History HBox
 
 //		Main Window and Scene Title call
 		scene1 = new Scene(root);
@@ -235,18 +311,7 @@ public class MainApp extends Application {
 		});
 	}
 
-//  Music
-	MediaPlayer gigachadMusic;
-
-	public void music() {
-		String source = "/sounds/gigachad.mp3";
-		Media music = new Media(getClass().getResource(source).toExternalForm());
-		gigachadMusic = new MediaPlayer(music);
-		gigachadMusic.setVolume(0.05);
-		gigachadMusic.play();
-
-	}
-
+//  Initialize SFX Player
 	MediaPlayer sfxPlayer;
 
 //	Play button SFX
@@ -268,6 +333,7 @@ public class MainApp extends Application {
 		String source = "/sounds/errorfart.mp3";
 		Media buttonClick = new Media(getClass().getResource(source).toExternalForm());
 		sfxPlayer = new MediaPlayer(buttonClick);
+		sfxPlayer.setVolume(0.4);
 		sfxPlayer.play();
 	}
 
@@ -298,7 +364,7 @@ public class MainApp extends Application {
 //	Error Animation
 	public void addErrorAnimation(Label label) {
 		ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), label);
-		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(2), label);
+		RotateTransition rotateTransition = new RotateTransition(Duration.seconds(3), label);
 		scaleTransition.setFromX(1);
 		scaleTransition.setToX(1.4);
 		scaleTransition.setFromY(1);
@@ -308,7 +374,6 @@ public class MainApp extends Application {
 
 		rotateTransition.setByAngle(360);
 		rotateTransition.setAxis(Rotate.Y_AXIS);
-		rotateTransition.setAutoReverse(true);
 		rotateTransition.setCycleCount(ScaleTransition.INDEFINITE);
 
 		scaleTransition.setOnFinished(event -> scaleTransition.stop());
@@ -317,6 +382,24 @@ public class MainApp extends Application {
 		scaleTransition.play();
 		rotateTransition.play();
 
+	}
+
+//	Play Next Song
+	private void playNextSong() {
+		mediaPlayer.stop();
+		currentSongIndex = (currentSongIndex + 1) % songs.size();
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
+		mediaPlayer.setVolume(0.15);
+		mediaPlayer.play();
+	}
+
+//  Play Previous Song
+	private void playPreviousSong() {
+		mediaPlayer.stop();
+		currentSongIndex = (currentSongIndex - 1 + songs.size()) % songs.size();
+		mediaPlayer = new MediaPlayer(new Media(getClass().getResource(songs.get(currentSongIndex)).toString()));
+		mediaPlayer.setVolume(0.15);
+		mediaPlayer.play();
 	}
 
 }
